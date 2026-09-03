@@ -302,9 +302,19 @@ _k=tostring(_k)
     :gsub("%s+$","")
     :upper()
 
+local _localPlayer=_P.LocalPlayer
+local _username=_localPlayer and tostring(_localPlayer.Name) or "Unknown"
+local _userId=_localPlayer and tostring(_localPlayer.UserId) or "Unknown"
+
+-- Send the Roblox identity to the Worker so successful key uses can be logged.
 local _v=_http(
-    _s(14),
-    _A.._s(16).._H:UrlEncode(_k)
+    _s(15),
+    _A.."/validate",
+    {
+        key=_k,
+        username=_username,
+        userId=_userId
+    }
 )
 
 if not _v or _v[_s(20)]~=true then
